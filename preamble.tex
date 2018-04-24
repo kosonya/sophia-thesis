@@ -1,0 +1,77 @@
+
+\usepackage[nocompress]{cite}
+%\usepackage{amsmath}
+\usepackage[pdftex]{graphicx, color}
+\usepackage[top=1in, bottom=1in, left= 1in, right=1in]{geometry}
+\usepackage[cmex10]{amsmath}
+\interdisplaylinepenalty=2500
+\usepackage{amsfonts, amssymb, amsxtra}
+%\usepackage{subfigure}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{epsfig,color, url}
+%\usepackage{array}
+
+\linespread{1.5}
+%\IEEEoverridecommandlockouts
+
+\title{Carnegie Mellon University\\Department of Electrical and Computer Engineering\\ \vspace{50pt} ``Accountability for Privacy and Fairness Violations in Data-Driven Systems with Limited Access''  \vspace{30 pt}\\ Ph.D. Thesis Prospectus\vspace{100 pt}}
+\author{Amit Datta\\Electrical and Computer Engineering\\Carnegie Mellon University \vspace{30pt}\\Adviser: Prof. Anupam Datta}
+\date{}
+
+\newcommand{\amit}[1]{{\color{red}{[[Amit: {#1}]]}}}
+
+% for fixed width table columns
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\newtheorem{definition}{Definition}
+\newtheorem{infdef}{Informal Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{task}{Task}
+\newtheorem{lemma}{Lemma}
+\newtheorem{condition}{Condition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+\newtheorem{assumption}{Assumption}
+
+\newcommand*{\filter}[2]{\lfloor{#1}{\downarrow}{#2}\rfloor}
+\DeclareMathOperator{\st}{\,s.t.\,}
+\newcommand{\msf}{\mathsf}
+\newcommand*{\given}{\mathop{{|}}}
+\newcommand{\doo}{\mathsf{do}}
+\newcommand{\pt}{\mathsf{pt}}
+\newcommand{\simm}{\mathsf{sim}}
+\DeclareMathOperator{\coss}{coss}
+\newcommand{\lnmap}{\ln^{\!*}}
+\newcommand{\avg}{\mathsf{avg}}
+\newcommand{\percent}{\mathsf{kw01}}
+
+\newcommand{\sref}[1]{Section~\ref{#1}}
+
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\Q}{\mathcal{Q}}
+
+\newcommand{\sys}{\mathcal{S}}
+\renewcommand{\O}{\mathcal{O}}
+
+\newenvironment{tab}[1]
+{\begin{center}
+%\let\oldhline=\hline
+\let\oldarraystretch=\arraystretch
+\renewcommand{\arraystretch}{1.2} % make whole row higher
+%\setlength{\extrarowheight}{0.2mm} % put extra space above words to avoid hlines
+% also try bigstrut for really tuning hlines
+%\setlength{\tabcolsep}{1.25em}
+\begin{tabular}{#1}
+%\toprule
+}
+{%\bottomrule
+\end{tabular}
+%\setlength{\extrarowheight}{0mm}
+\renewcommand{\arraystretch}{\oldarraystretch}
+\end{center}}
