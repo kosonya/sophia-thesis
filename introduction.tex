@@ -1,3 +1,49 @@
 \chapter{Introduction}
 
+\paragraph{Motivation}
 
+The widespread adoption of machine learning systems that have opaque
+decision-making mechanisms has lead to a growing number of privacy and fairness
+concerns.
+
+Most notably, recommender systems based on matrix factorization
+input only the information about the behavior of users with regard to items
+being recommended (e.g. movies on a movie rating website, products in an
+online store) and from that they infer certain properties of the items and
+user preferences in terms of these properties\cite{facebook-cf}. The properties
+being inferred are unknown both to the system and to its users. Sometimes,
+developers can eyeball these properties and conclude that, for example, a movie
+recommender system, among other properties, infers whether a movie is more
+female-oriented or male-oriented and whether it's more serious or escapist.
+Correspondingly, it also infers whether each user prefers more ``masculine'' or
+``feminine'' and more ``serious'' or ``escapist'' movies\cite{koren2009matrix}.
+Unfortunately, such interpretations cannot always be automatically provided.
+Automatically provided explanations are often expressed in terms of user or
+item similarity (i.e. ``we recommend you item X because you liked items Y and
+Z'') without giving insight into the internal inferences being made (such as
+``we recommend you item X because we think that X is masculine and you like
+masculine things''). While the gender-based targeting may or may not be seen as
+problematic in the context of movie recommendations, but it is very likely to be
+deemed problematic in the context of job recommendations, given the previous
+history of controversies surrounding gendered targeting of job ads
+\cite{datta_tschantz_datta_2015}.
+
+Likewise, artificial neural networks can be used in credit decisions
+\cite{WEST20001131}, predictive policing\cite{Seo2018PartiallyGN}, and other
+applications where it is crucial (and often legally mandatory) to ensure
+fairness. In practice, however, these networks can infer and use in their
+decisions sensitive attributes such as gender even when they are not present
+as features in the training data set\cite{Beutel2017DataDA}.
+
+The issue is further complicated by the fact that the mere absence of usage of
+sensitive protected attributes is not always sufficient to maintain legality:
+if a certain selection criterion creates disparate impact on a sensitive
+attribute (i.e. members of a protected group are being disproportionately
+affected by it), it can be deemed illegal unless it can be justified as business
+necessity. Furthermore, this can be specific to a particular predicate on a
+feature rather than the feature itself: for example, it can be legal for an
+airline to require candidates for pilot jobs to be at least 5'2" tall because
+that is necessary to reach all of the aircraft controls but it is illegal to
+set the minimum requirement at a higher point of 5'6" because that
+disproportionately selects against women and is not justified as necessary
+for a pilot\cite{RoseMaryCourtCase}.
