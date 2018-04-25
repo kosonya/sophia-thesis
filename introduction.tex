@@ -79,10 +79,52 @@ latent factor, but if there are no tags about the movies being ``serious'' or
 other available data, which may result in overfitting or completely
 unintelligible explanations. In practice, we have observed that most latent
 factors tend to be predicted with roughly the same accuracy, which means that
-all of them contain a mix of interpretable and uninterpretable information.
+all of them contain a mix of interpretable and uninterpretable information. The
+proposal is to fix that by transforming the model in a way that isolates
+uninterpretable factors, which can be left as ``black boxes'' in the
+explanation, while improving the predictability from metadata (and thus
+interpretability) of other factors. This can be done, for example, by first
+training the model, and then optimizing it for this kind of interpretability
+subject to constraint that the output must remain unchanged. Alternatively, it
+may be done by creating an invertable transformation matrix that can be applied
+before and after generating explanations. The crucial contribution that we
+expect to make here is the formalization of the isolated interpretability loss
+function as well as development of a method for optimizing for it.
 
+In addition, we hope to collaborate with Coursera to make a case study of
+transparency and explanations in course recommendations, where it is
+particularly important to understand why certain courses are being recommended.
 
+\paragraph{Ongoing work}
 
+Transparency alone is sufficient in some cases, but in others it is also
+important to modify a model in a way that enforces fairness if it is violated.
+There exist methods for completely removing information about sensitive
+attributes from a model's internal representations\cite{Beutel2017DataDA}, but
+this is not always applicable. For example, if a system is making decisions
+about loans, it should not rely on gender, but it can be justifiable for it to
+rely on applicants' income. However, income can be correlated with gender, in
+which case ensuring complete unpredictability of gender from the internal
+representation will also remove or distort information about income, which is
+undesirable. Thus, we are developing a method for removing the information
+about sensitive attributes subject to constraint that the information about
+features justifiable as business necessity must remain. The main challenge here
+is that doing such optimization requires estimating the distribution of the
+internal representation in a way that is differentiable (so that it would be
+possible to optimize on this metric) and makes as few assumptions about this
+distribution as possible.
+
+While the main focus of this thesis is on matrix factorization models, this
+method is also applicable to neural networks and linear models. One advantage of
+applying it to neural networks is that they can solve classification and not
+just recommendation problems, and it tends to be more feasible to obtain data
+sets for classification problems that have sensitive attributes available. For
+example, we have so far been working with HMDA loan decisions data set and a
+neural network that predicts them. The application of this method to neural
+networks poses an additional challenge of selection at which point the
+intervention should be made: an intermediate layer or the output. In matrix
+factorization models, the most natural choice is the intermediate layer, and in
+linear models the only possible choice is the output.
 
 \paragraph{Thesis statement}
 
