@@ -50,4 +50,42 @@ for a pilot\cite{RoseMaryCourtCase}.
 
 \paragraph{Completed work}
 
+In our study of interpreting latent factors of recommender systems, we introduce
+a notion of a shadow model -- an interpretable model that mimics the behavior
+of the original uninterpretable model as closely as possible. We are trying to
+preserve both the external behavior and the internal structure of the original
+model, and we show that these goals are not always equally achievable at the
+same time. Specifically, we work with a MovieLens data set to create a
+movie recommendation system based on matrix factorization. We then collect
+metadata about movies present in the dataset from publicly available sources
+such as IMDB and TV Tropes. We use that metadata to predict the values of latent
+factors representing the properties of the movies. Then, we analyze these
+predictions with quantitative input influence (QII) method
+\cite{datta2016algorithmic} and use this analysis to infer the meaning of the
+factors in the original model. This inference is further verified in experiments
+with simulated users, for whom the true movie preferences are known, and thus
+we can compare how accurately each explanation corresponds to properties the
+users actually care about.
+
+\paragraph{Proposed work}
+
+A substantial limitation of the method outlined above is that not all
+item properties inferred by the matrix factorization system can be interpreted.
+This can be sometimes a limitation of the available metadata: for example,
+if the data set contains tags about whether movies are oriented towards male or
+female audience, the shadow model would be able to capture that meaning of a
+latent factor, but if there are no tags about the movies being ``serious'' or
+``escapist'', the shadow model would do its best at predicting its values from
+other available data, which may result in overfitting or completely
+unintelligible explanations. In practice, we have observed that most latent
+factors tend to be predicted with roughly the same accuracy, which means that
+all of them contain a mix of interpretable and uninterpretable information.
+
+
+
+
+\paragraph{Thesis statement}
+
+\emph{Representation aware accounting for matrix factorization models enables
+explanations for for recommendations and mitigates bias.}
 
