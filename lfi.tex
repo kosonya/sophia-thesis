@@ -22,4 +22,47 @@ user-generated data and using topic modeling to transform it into
 machine-readable features, but this method has not increased the quality of
 prediction and explanation substantially enough to be used.
 
+The process of building a recommender system and interpreting its output goes
+as follows:
 
+\begin{enumerate}
+	\item
+		A matrix factorization model is trained on the MovieLens data
+		set;
+	\item
+		After a matrix of movie latent factors is obtained, we treat
+		each latent factor as the target variable to be predicted with
+		a decision tree model from metadata features;
+	\item
+		Once we have built this model, we treat recommendations given by
+		it as proxies for the real recommendations, and in order to see
+		which metadata features are influential in a particular
+		recommendation, we use the QII method and randomly perturb the
+		values of metadata features and compare this counterfactual
+		output to the original output;
+	\item
+		The features which affect the output the most are deemed the
+		most influential.
+\end{enumerate}
+
+The shadow model can be evaluated in at least two ways: the quality of
+prediction of individual latent factors (``latent factor agreement'') and the
+quality of prediction of the end recommendation compared to the original model
+(``observational agreement''). One might assume that these two metrics should
+always correspond to each other; however, we have shown that it is not
+necessarily the case, and one model can perform the best on latent factor
+agreement, whereas another one can perform the best on observational agreement.
+
+The explanation for a recommendation is given in the form of a vector that shows
+for every metadata feature with non-zero influence its numeric influence
+value, which also indicated whether the influence is positive of negative. This
+vector can also be sorted by the absolute value of the influence into a ranked
+list of the most influential features.
+
+In order to numerically evaluate how accurate the explanations are, we generate
+a data set of ratings that are assigned to movies by simulated users, each of
+whom has a set of liked and disliked features, and the rating is determined by
+their presence or absence for a given movie. Since the true list of features
+that influence preferences of a particular user is known, every explanation can
+be evaluated by how close to the top of the list of inferred influential
+features the real ones are.
