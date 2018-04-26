@@ -1,1 +1,75 @@
 \chapter{Isolating uninterpretability}
+
+A major drawback of the method of explaining matrix factorization in terms of
+known metadata features is that not all information encoded in the latent
+factors is in fact interpretable. In our experiments, we have observed some
+amount of variation in the quality of prediction of different latent factors,
+but it is nowhere near as much as it would need to be in order for us to be able
+to claim that some of these features are interpreted well, and others are
+interpreted poorly. The matrix factorization model comes up with a distributed
+representation of interpretable information, where all features together may
+have information about several metadata factors, but every single feature has it
+mixed together with uninterpretable information. Currently, the prediction
+algorithms just to their best at predicting the latent factors and come up with
+some possible interpretation of them, even if it is inaccurate.
+
+Much better understanding of the model's behavior could be achieved if the
+process of analysis specifically marked the parts that cannot be explained well
+and gave more credible and confident explanations to the parts that can be
+explained. We hypothesize that it can be achieved by transforming the model such
+that the output remains unchanged (and thus we are still solving the task of
+interpreting the existing model rather than creating a separate more
+interpretable model), but the latent factors are altered in a way that makes
+some of them much more predictable from metadata at the expense of the
+predictability of the others. Then, we well-predicted factors can be
+incorporated in the explanation, whereas the poorly predicted ones are discarded
+and labeled as ``unknown''.
+
+The idea that such transformation is possible is based on the assumption that
+the information predictable from metadata is spread across multiple latent
+factors and can be concentrated. For example, consider a situation when movies
+are being recommended based on ``masculinity -- femininity'' axis and
+``deep -- escapist'' axis, but the metadata only contains informations about
+``masculinity -- femininity''. However, an infinite number of equivalent models
+can be constructed by rotating the coordinates of both user and movie latent
+factor matrices. Only four of these infinite possibilities will contain a latent
+factor that is exactly aligned with the ``masculinity -- femininity'' axis,
+which is therefore ideally predictable from the metadata. In all other possible
+rotations, both of the latent factors will contain some information about both
+``masculinity -- femininity'' and ``deep -- escapist'' axes. Assuming that
+metadata doesn't contain information that could be used as a proxy for the
+latter, the both latent factors will be predicted not ideally, involving some
+information about ``masculinity -- femininity'' and then either nothing or
+other features as the result of overfitting. The quality of explanation can be
+drastically improved by finding such rotation of the coordinates that one of the
+latent factors aligns with an axis predictable from metadata. The search for
+such transformation can be formalized as trying to minimize the minimum
+prediction error of the two latent factors.
+
+In a more general case, the definitions of optimization criteria can be trickier
+to develop. It is possible that no invertible transformation exists such that
+one or more of the latent factors are predicted ideally. Instead, we would
+expect to see variance in how well the factors are predicted. In addition, using
+prediction quality as the optimization criterion can be challenging if the
+model used for prediction is not gradient-based (e.g. a decision tree), and it
+can be very computationally expensive to retrain models with every iteration of
+the search. One possibility would be to optimize based on mutual information
+between the latent factors and metadata features, but this is not a
+straightforward task either due to the challenges in distribution estimation and
+the fact that the space of metadata features is very highly dimensional.
+Furthermore, even among models that predict a latent feature from metadata
+ideally, simpler models are more desirable, being more human-understandable.
+This can affect the transformation as well: if, for example, movies are
+recommended based on whether they are horror movies, their year of release, and
+whether they contain any footage of a burning fire, and the metadata set only
+contains information about the first two, among transformations that result in
+two of the latent factors being ideally predictable, there still exist many
+possible rotations, some of which result in factors that are mix of horror and
+release year, and some of which have them on orthogonal axes. The predictions
+will be much more human-legible if the second case, but in order to find this
+transformation, the simplicity of the model should also be incorporated into the
+loss function, and there should be a trade-off between the model simplicity and
+prediction quality.
+
+Addressing all this challenges and coming up with a viable method for searching
+for such transformations is the core of the proposed work.
