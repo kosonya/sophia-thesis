@@ -1,1 +1,25 @@
 \chapter{Latent Factor Interpretation}
+
+In this study, we introduce a method for generating explanations for the
+output of matrix factorization systems by means of interpreting latent factors
+with shadow models.
+
+The recommender system itself is trained on a MovieLens 20M data set
+\cite{data-movielens}, that consists of $<user,movie,rating>$ tuples, where
+rating is given as an integer value from 1 to 5, user is given by an anonymous
+ID, and movie is given by an ID that is uniquely associated with the movie
+title.
+
+The metadata for the movies is assembled from multiple sources. MovieLens data
+set itself contains data about movie genres and user-generated unstructured
+tags. Then we incorporated the IMDB data set\cite{data-imdb}, that contains
+information about user-generated movie keywords, directors, producers,
+composers, and other data. Finally, we incorporated DBTropes\cite{data-dbtropes}
+-- a machine-readable version of TV Tropes -- a wiki-based website that contains
+descriptions of movies and other media in terms of commonly appearing patterns,
+which they call ``tropes''. We have also tried incorporating more unstructured
+user-generated data and using topic modeling to transform it into
+machine-readable features, but this method has not increased the quality of
+prediction and explanation substantially enough to be used.
+
+
