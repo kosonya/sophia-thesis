@@ -1,0 +1,63 @@
+\chapter{Conditional debiasing}
+
+In many situations, interpretation alone may not be enough, and the model may
+have to be changed in a way that removes bias from them. While there have been
+numerous studies in this area, they tend to focus on removing the use of
+sensitive attributes entirely. This may not be desirable in situations where
+some use or the use of features correlated with sensitive ones is justifiable.
+
+We propose a method for removing unmediated use of protected attributes from
+machine learning models. This method is applicable to models that have an
+internal numeric representation of the input data which are trained with
+gradient-based methods. Such models include neural networks, matrix
+factorization models, and linear models.
+
+Generally, the model transforms a set of input features $X$ into a single target
+variable $Y$. $X$ can be divided into the following subsets:
+
+\begin{itemize}
+	\item
+		$X_{bn}$ -- business necessity features, that the model is
+		allowed to use in any capacity (note that the data set may not
+		contain a feature with this property, in which case it should be
+		constructed during preprocessing; for example, if it’s
+		established that airlines are justified in requiring pilots to
+		be at least 5'5" tall but not justified in posting stricter
+		height requirements, then a business necessity feature would be
+		a binary ``is the applicant at least 5'5" tall'' rather than
+		numeric height);
+	\item
+		$X_{pr}$ -- protected features (such as gender or race), that
+		the decisions of the model may not depend on and may not create
+		disparate impact on to an extent larger than explicitly 
+		justified by business necessity features. In this situation, the
+		use of a protected feature is said to be mediated by the
+		business necessity features;
+	\item
+		$X_{gen}$ - other features, that may be used in decisions so
+		long as they don’t create disparate impact on protected features.
+\end{itemize}
+
+The use of protected features can be mitigated either at the level of the model
+output $Ŷ$ or internal feature representation R, which can be an inner layer of a
+neural network. After the level at which the use is to be removed is selected,
+it can be denoted as $V$. The desired property of a model -- not using protected
+features or their correlates to an extent greater than business necessity -- can
+be formally defined as $V\perp X_{pr}|X_{bn}$.
+
+Since conditional independence in a binary property, it is difficult to optimize
+for, so instead we replace it with an equivalent definition based on conditional
+mutual information: $I(V;X_{pr}|X_{bn}) = 0$. Then, the goal can be formulated
+as minimizing the value of this term, and it can be added to the model’s loss
+function $L$, which the training process minimizes with gradient descent:
+$L' = L + I(V;X_{pr}|X_{bn})$.
+
+By definition,
+
+\begin{equation}
+I(V;X_{pr}|X_{bn}) = \sum_{v \in V} \sum_{x_{pr} \in X_{pr}}
+\sum_{x_{bn} \in X_{bn}} p_{V,X_{pr},X_{bn}}(v,x_{pr},x_{bn}) \cdot log
+\frac{p_{X_{bn}}(x_{bn})\cdot p_{V,X_{pr},X_{bn}}(v,x_{pr},x_{bn})}
+{p_{V,X_{bn}}(v,x_{bn}) \cdot p_{X_{pr},X_{bn}}(x_{pr},x_{bn})}
+\end{equation}
+
