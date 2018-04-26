@@ -86,7 +86,7 @@ explanation, while improving the predictability from metadata (and thus
 interpretability) of other factors. This can be done, for example, by first
 training the model, and then optimizing it for this kind of interpretability
 subject to constraint that the output must remain unchanged. Alternatively, it
-may be done by creating an invertable transformation matrix that can be applied
+may be done by creating an invertible transformation matrix that can be applied
 before and after generating explanations. The crucial contribution that we
 expect to make here is the formalization of the isolated interpretability loss
 function as well as development of a method for optimizing for it.
@@ -130,4 +130,24 @@ linear models the only possible choice is the output.
 
 \emph{Representation aware accounting for matrix factorization models enables
 explanations for for recommendations and mitigates bias.}
+
+\paragraph{Related work}
+
+As was mentioned above, multiple studies exist that have been exploring the
+area of this thesis. The prediction of latent factor based on metadata has been
+previously tried\cite{gantner2010learning}, but not in the context of creating
+explanations and not with the goal of preserving causal correspondence between
+the original model and the shadow model. Some attempts to interpret latent
+factors rely on the authors looking at the data and making a judgment call
+without relying on a formal methodology that can be generalized
+\cite{koren2009matrix}. Others use topic modeling, which results in features
+that may not be necessarily understandable to the users
+\cite{rossetti2013towards}.
+
+
+The existing research on removing the use of sensitive attributes from
+representations focuses on removing them completely, without constraining the
+removal by business necessity, which substantially limits its applicability in
+real world scenarios\cite{Beutel2017DataDA}, or make strong assumptions about
+the underlying distributions\cite{Kamishima}.
 
