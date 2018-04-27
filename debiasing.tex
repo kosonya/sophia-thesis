@@ -61,3 +61,26 @@ I(V;X_{pr}|X_{bn}) = \sum_{v \in V} \sum_{x_{pr} \in X_{pr}}
 {p_{V,X_{bn}}(v,x_{bn}) \cdot p_{X_{pr},X_{bn}}(x_{pr},x_{bn})}
 \end{equation}
 
+Thus, computing $I(V;X_{pr}|X_{bn})$ requires estimating several probability
+distributions. This poses several challenges. First, each of $V$, $X_{pr}$,
+$X_{bn}$ can itself be highly-dimensional, making the problem challenging by
+the fact that data examples are unlikely to cover the entirety of the possible
+space. Second, while $p_{X_{bn}}(x_{bn})$ and $p_{X_{pr},X_{bn}}(x_{pr},x_{bn})$
+only depend on the input data, and thus can be precomputed before the step of
+model optimization, all other distributions in this equation depend on $V$,
+which changes depending on the parameters of the model. Thus, in order for the
+model to be able to optimize for the loss function $L' = L + I(V;X_{pr}|X_{bn})$,
+the entirety of the process of density estimation must be differentiable so that
+gradient descent could be used for optimization.
+
+TensorFlow framework offers implementation of statistical analysis methods
+which can be used in kernel density estimation and are differentiable
+\cite{171110604}. However, in order to maintain the desired properties, this
+implementation has significant constraints, such as not supporting the addition
+of distributions.
+
+The proposed work in this section is to address these challenges in estimating
+distributions -- possibly by imposing certain constraints on the kinds of models
+and data sets that can this method can be applicable to -- and implement a
+system capable of training debiased models subject to constraint of maintaining
+business necessity features.
