@@ -1,6 +1,6 @@
 \chapter{Introduction}
 
-\paragraph{Motivation}
+\section{Motivation}
 
 The widespread adoption of machine learning systems that have opaque
 decision-making mechanisms has lead to a growing number of privacy and fairness
@@ -48,7 +48,7 @@ set the minimum requirement at a higher point of 5'6" because that
 disproportionately selects against women and is not justified as necessary
 for a pilot\cite{RoseMaryCourtCase}.
 
-\paragraph{Completed work}
+\section{Completed work}
 
 In our study of interpreting latent factors of recommender systems, we introduce
 a notion of a shadow model -- an interpretable model that mimics the behavior
@@ -67,7 +67,7 @@ with simulated users, for whom the true movie preferences are known, and thus
 we can compare how accurately each explanation corresponds to properties the
 users actually care about.
 
-\paragraph{Proposed work}
+\section{Proposed work}
 
 A substantial limitation of the method outlined above is that not all
 item properties inferred by the matrix factorization system can be interpreted.
@@ -95,7 +95,7 @@ In addition, we hope to collaborate with Coursera to make a case study of
 transparency and explanations in course recommendations, where it is
 particularly important to understand why certain courses are being recommended.
 
-\paragraph{Ongoing work}
+\section{Ongoing work}
 
 Transparency alone is sufficient in some cases, but in others it is also
 important to modify a model in a way that enforces fairness if it is violated.
@@ -126,15 +126,18 @@ intervention should be made: an intermediate layer or the output. In matrix
 factorization models, the most natural choice is the intermediate layer, and in
 linear models the only possible choice is the output.
 
-\paragraph{Thesis statement}
+\section{Thesis statement}
 
 \emph{Representation aware accounting for matrix factorization models enables
 explanations for for recommendations and mitigates bias.}
 
-\paragraph{Related work}
+\section{Related work}
 
 As was mentioned above, multiple studies exist that have been exploring the
-area of this thesis. The prediction of latent factor based on metadata has been
+area of this thesis.
+
+\paragraph{Latent factor interpretation}
+The prediction of latent factor based on metadata has been
 previously tried\cite{gantner2010learning}, but not in the context of creating
 explanations and not with the goal of preserving causal correspondence between
 the original model and the shadow model. Some attempts to interpret latent
@@ -142,7 +145,25 @@ factors rely on the authors looking at the data and making a judgment call
 without relying on a formal methodology that can be generalized
 \cite{koren2009matrix}. Others use topic modeling, which results in features
 that may not be necessarily understandable to the users
-\cite{rossetti2013towards}.
+\cite{rossetti2013towards}. The technique of training an approximate, but
+interpretable shadow
+model for LFI is similar in spirit to approaches to explaining other
+machine learning
+systems~\cite{craven1995extracting,ribeiro2016lime,sanchez2015towards}.
+An important difference is that prior work has explored this idea
+using the features present in the task itself, or using pre-defined
+mappings to an interpretable space. 
+Instead, we use externally available interpretable features and
+\emph{learn} the mapping to an interpretable space.
+We also differ from existing approaches that attribute meaning to
+latent factors, e.g.
+with topic models\cite{rossetti2013towards}, in that the constructed
+shadow model is itself a recommendation model, albeit with
+interpretable inputs, and is therefore amenable to existing
+explanation techniques for machine learning models.
+
+
+
 
 
 The existing research on removing the use of sensitive attributes from
