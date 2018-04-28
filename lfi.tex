@@ -151,6 +151,8 @@ factor prediction.
 Averaging over all factors, we get a measure of the overall latent
 factor agreement.
 
+\section{Results}
+
 In our experiments, we used all movie ratings from MovieLens 20M dataset for constructing
 a recommender system. 
 For subsequent steps, however, we performed several pre-processing
@@ -217,7 +219,85 @@ second-best for latent factor agreement (rank 20, tree, lambda 0.1, 8 bins, dept
 and observational agreement (Rank 12, tree, lambda 0.1, 8 bins, depth 5),
 although their performance is reasonably close to each other.
 
+To construct interpretations of the recommendations produced by the
+shadow model, we measure the influence of each of the metadata
+features on the rating the shadow model produces. 
+For a particular recommendation (user,movie pair), the definition of
+influence of a metadata feature in
+this setting measures the expected change in the output of the
+recommender (the rating) if we substitute a fresh value for only that
+metadata feature with one sampled independently from its marginal,
+while all the other metadata features are kept fixed.
 
+Several examples of the resulting influence measures can be seen in
+Figure~\ref{fig:results:qii}. 
+For two users, we see the top 10 most influential features in their
+recommendation for two different movies.
+We order the influential metadata features on the y-axis and chart
+their influence (which can be measured in $\bigstar$) on the x-axis. 
+
+\subsection{Synthetic data set testing}
+
+In the absence of user studies, we simulated users generating movie
+ratings based on known rules in order to verify the hypothesis that
+our system can detect the true user preferences. 
+For this approach we generated a synthetic dataset based on a simple
+user preference and rating simulation.
+
+In the simulation, a set of user preferences were generated to be
+expressible exactly in terms of randomly selected movie metadata
+features.
+Randomly assigned to a user, these preferences either increased or
+decreased their simulated movie ratings. 
+Ratings were generated for randomly selected set of movies for each
+user.
+
+We trained a matrix factorization model on the synthetic data set, and
+performed our analysis based on the shadow model construction and QII
+measurement.
+We then calculated a score from 0 to 1, indicating the closeness of
+the measured QII values compared to the known metadata features that
+were actually used to simulate ratings.
+This score is then compared to its value calculated with respect to
+sets of independently randomized or partially randomized user
+preferences (not the ones used to generate the synthetic dataset). 
+This comparison is done in expectation that the real evaluation score
+will perform statistically significantly better on the synthetic
+personalities than on only partially related semi-random
+personalities, and in turn better yet than on fully random
+personalities.
+As demonstrated in Table~\ref{table:ttest}, this hypothesis holds
+given sufficiently large sample sizes.
+
+Additionally, we manually constructing a matrix factorization model
+that directly encodes simulated user preferences, and found that such
+a system perfectly captures synthetic personalities rather than just
+better than controls.
+This suggests that some of the errors in determining user preferences
+could be due to the recommender system trainer's inability to learn
+the right predictive model (even if one exists) rather than due to
+inaccuracies in our system of shadow models.
+\begin{table}
+  %\hspace{-0.7cm}
+  \small
+  \begin{tabular}{|p{2cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|} \hline
+    \multirow{2}{*}{Parameters} & \multirow{2}{0.55cm}{t. mean} & \multirow{2}{0.55cm}{s.r. mean} & \multirow{2}{0.55cm}{r. mean} & \multicolumn{2}{|c|}{\mbox{$t. > s.r.$}} & \multicolumn{2}{|c|}{$s.r. > r.$} \\
+    \cline{5-8}                 &      &      &      & p     & e.s. & p       & e.s. \\ \hline
+    {\scriptsize N=20, 3 pr, rn 3, 15 h.e.f.} & 0.75 & 0.51 & 0    & {\scriptsize 6e-11} & 3.3  & 1e-20   & 14.2 \\ \hline
+    {\scriptsize N=20, 8 pr, rn 3, 40 h.e.f.} & 0.26 & 0.2  & 0    & 0.03  & 0.8  & 8e-11   & 4.2 \\ \hline
+    {\scriptsize N=20, 8 pr, rn 8, 40 h.e.f.} & 0.4  & 0.3  & {\scriptsize 2e-4} & 0.02  & 0.5  & 1e-23   & 4.5 \\ \hline
+    {\scriptsize N=20, 10 pr, rn 15, any 250} & 0.22 & 0.19 & 0    & 0.1   & 0.5  & 7e-11   & 4.2 \\ \hline
+    {\scriptsize N=49, 10 pr, rn 15, any 250} & 0.22 & 0.19 & 0    & 0.02  & 0.5  & {\scriptsize 1.5e-27} & 4.6 \\ \hline
+  \end{tabular}%\vspace{0.25cm}
+  \caption{\label{table:ttest} Synthetic data set hypotheses testing.
+    The parameters of the experiments include: sample size, number of user preference profiles, rank of the matrix factorization model, and the strategy of selecting features for generating profiles.
+    ``h.e.f.''
+    stands for highest-entropy features, ``any 250'' stands for any features with more than 250 non-zero values, ``s.r.''
+    stands for semi-random, ``r.''
+    stands for random, ``t.''
+    stands for true, ``e.s.''
+    stands for effect size, ``pr'' stands for profiles, ``rn'' stands for rank.}
+\end{table}
 
 
 
