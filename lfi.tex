@@ -4,6 +4,64 @@ In this study, we introduce a method for generating explanations for the
 output of matrix factorization systems by means of interpreting latent factors
 with shadow models.
 
+\section{Motivation}
+
+Recommender systems that perform collaborative filtering via matrix
+factorization are state-of-the-art in important application domains,
+including movie and social
+recommendations~\cite{koren2009matrix,facebook-cf}.
+However, these models are difficult to interpret because they express
+user preferences and item characteristics along a set of uninterpreted
+latent factors trained from a sparse set of user ratings.
+
+In order to interpret models that use uninterpreted latent factors, we
+address three challenges.
+
+The first challenge is that the latent factors are constants
+uninterpretable to humans; any explanations in terms of these factors
+would be unintelligible.
+In order to address this problem, we learn a mapping from
+interpretable features to these latent factors.
+We then compose the mapping with the rest of the model. 
+In our setting, we compose the interpretation of item latent factors
+with user latent factors to make recommendations. 
+We call the composed model, a \emph{shadow model}.
+
+Our second challenge is that this composed shadow model still remains
+too complex for direct interpretation.
+However, since the shadow model expresses ratings in terms of
+interpretable features, we can leverage existing model explanation
+techniques~\cite{datta2016algorithmic,ribeiro2016lime}.
+In particular, in this paper, we determine influential features using
+an existing technique \cite{datta2016algorithmic}.
+Note that the purpose of the shadow model is not to supplant the
+recommender system, but to interpret its predictions.
+
+The third challenge is maintaining correspondence between
+interpretations and the models they explain.
+Re-expression of a system via a shadow model does not guarantee that
+the interpretations constructed from the shadow represent the
+functioning of the original. 
+In our approach, we substitute predicted item latent factors but keep
+the remaining structure of the recommender system intact. 
+Therefore the effects of the item factors on recommendations in the
+shadow model are identical to those of the original. 
+Demonstrating a level of accuracy in predicting both the latent
+factors, and the resulting recommendations, we can claim that our
+interpretations are meaningful because \textbf{the shadow model makes
+  similar recommendations for similar reasons.}
+
+\section{Method}
+
+Our approach to interpreting recommender systems based on matrix factorization
+comprises of two steps. First, we use publicly available interpretable features 
+(i.e., metadata) about items as interpretable features
+to predict latent factors of these items. We then compose these models
+for predicting latent factors into models that predict the outcomes
+for particular users. Second, this shadow model composed of predictors for the latent
+factors is used to generate human-understandable explanations of outcomes
+by identifying the most influential interpretable features.
+
 The recommender system itself is trained on a MovieLens 20M data set
 \cite{data-movielens}, that consists of $<user,movie,rating>$ tuples, where
 rating is given as an integer value from 1 to 5, user is given by an anonymous
@@ -21,6 +79,94 @@ which they call ``tropes''. We have also tried incorporating more unstructured
 user-generated data and using topic modeling to transform it into
 machine-readable features, but this method has not increased the quality of
 prediction and explanation substantially enough to be used.
+
+We assume that we are given a matrix of interpretable attributes $A$, with
+one row $\vect{a}_i$ for each item $i$. For each item latent factor $j$, we train
+a predictor $f_j$  such that $f_j(\vect{a}_i) \approx \vect{i}_{ij}$.
+Composing these predictors, the final predicted recommendation for a user $u$ and item $i$
+can be approximated as follows:
+
+\[\hat{r}_{ui} = \vect{u}_u\cdot\vect{i}_i = \sum_{j = 1}^k \vect{u}_{uj}\vect{i}_{ij} \approx
+  \sum_{j = 1}^k \vect{u}_{uj}f_j(\vect{a}_i).
+\]
+
+Consequently, we use the composed model $\tilde{r}_u(\vect{a}) = \sum_{j = 1}^k
+\vect{u}_{uj}f_j(\vect{a})$ as a model that predicts the outcomes of the system
+for a movie with interpretable attributes $\vect{a}$ and user $u$. This shadow model
+is more interpretable insofar as it maps interpretable attributes to
+ratings. However, it is still fairly complex. Therefore, to interpret the
+behavior of the shadow model $\tilde{r}_u$ on a point $\vect{a}$, we examine
+the influences of interpretable attributes using QII.
+
+We interpret the shadow model by measuring the quantitative input
+influence of all metadata features
+
+on its output.
+This can be measured either on the output of a particular user-item
+pair, in which case the question being answered is ``why were you
+given this recommendation?''
+or the entirety of the model's predictions for this user over all
+items, in which case the measure would be answering ``what has the
+model inferred about your preferences in general?''.
+In its raw form, an interpretation takes the form of a list of
+feature-influence pairs but can be naturally visualized as in
+Figure~\ref{fig:results:qii}.
+
+\begin{figure*}[t!]
+  \centering
+  \begin{subfigure}[t]{0.45\textwidth}
+    \includegraphics[width=3in]{figures/qii_user_7_movie_2713_real_data.pdf}
+    \caption{User 7's recommendation about Lake Placid (1999)}
+  \end{subfigure}~
+  \begin{subfigure}[t]{0.45\textwidth}
+    \includegraphics[width=3in]{figures/qii_user_21_movie_2713_real_data.pdf}
+    \caption{User 21's recommendation about Lake Placid (1999)}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{0.45\textwidth}
+    \includegraphics[width=3in]{figures/qii_user_7_movie_2720_real_data.pdf}
+    \caption{User 7's recommendation about Inspector Gadget (1999)}
+  \end{subfigure} ~
+  \begin{subfigure}[t]{0.45\textwidth}
+    \includegraphics[width=3in]{figures/qii_user_21_movie_2720_real_data.pdf}
+    \caption{User 21's recommendation about Inspector Gadget (1999)}
+  \end{subfigure}
+
+
+  \caption{\label{fig:results:qii}A sampling of QII-based
+    recommendation interpretations based on shadow models over the
+    MovieLens 20M dataset for User 7 (left) and User 21 (right).
+  }
+\end{figure*}
+
+
+We measure the quality of the shadow model by computing the mean
+absolute error of its predictions compared to the original model,
+that we call \emph{baseline}.
+
+Another metric of the quality of the shadow model is how close it
+agrees with the original model on the latent factors themselves.
+For each factor, we compute the mean absolute error (MAE) of latent
+factor prediction. 
+Averaging over all factors, we get a measure of the overall latent
+factor agreement.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 The process of building a recommender system and interpreting its output goes
 as follows:
