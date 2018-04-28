@@ -1,1 +1,40 @@
 \section{Case studies}
+
+We would like to conduct additional case studies that would show how our methods
+generalize to different contexts.
+
+There are several publicly available data sets that have previously been used in
+recommender systems literature: Netflix, Book-Crossing, Last.Fm, and several
+others\cite{bobadilla2013recommender}. At least some of them contain information
+about known items such as movies, books or songs, for which we can
+fetch information from publicly available sources. This can itself pose a
+challenge when well-structured data is not available, in which case we might
+have to resort to using topic modeling on unstructured data, and then using the
+generated topics as features, which reduces the interpretability somewhat due to
+the topics themselves potentially being relatively complex, although this is a
+parameter which we can control.
+
+Additionally, we are negotiating with Coursera about the possibility of using
+their course recommendation data and trying to build a more precise recommender
+system without compromising interpretability, which is essential for this
+application.
+
+These data sets can be used to test latent factor interpretation and the
+isolation of uninterpretability. They potentially may be used for conditional
+debiasing as well, although in many of these situations it can be challenging to
+identify business necessity and protected attributes, since one can argue that
+the usage of gender in e.g. song recommendations is benign enough to be considered
+acceptable. There are cases when this usage becomes more problematic ethically
+or even legally, such as in job posting recommendations, but it is more difficult
+to obtain such data sets, or they may not contain the demographic data crucial for
+such debiasing. For example, we have experimented with Kaggle Job Recommendation
+Challenge data set\cite{data-jobs}, which doesn't contain sensitive attributes
+such as gender, race, or age. It does contain the users' Zip codes and graduation
+dates, which can be treated as proxies for race and age, and certain debiasing
+can be potentially done on these factors, but it remains to be seen whether this
+approach is fruitful.
+
+Classification tasks such as credit decisions (e.g. in the aforementioned HMDA
+data set\cite{data-hmda}) or crime data sets (which can be used in predictive
+policing tasks) more often contain sensitive data, and they can be used
+to test the conditional debiasing method as well.
