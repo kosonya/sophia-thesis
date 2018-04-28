@@ -176,5 +176,10 @@ assumes a model in which no distributed representations exist, and proxies are
 limited to a small number of subcomputations rather than spread out across the
 entire internal representation. A lot of studies have been done on restricting
 the explicit use of protected information\cite{TschantzDW12} but fewer deal with
-indirect inferences.
+indirect inferences. A large body of research focuses on ensuring fairness by
+modifying the training data set such that the model naturally ends up learning
+to make fair decisions
+\cite{luong11knn, feldman15disparate, dwork11fairness, zemel13fair}, but this
+may not always be feasible, and imposing specific constraints on the model itself
+can lead to more predictable behavior.
 
