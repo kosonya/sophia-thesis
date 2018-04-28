@@ -151,6 +151,71 @@ factor prediction.
 Averaging over all factors, we get a measure of the overall latent
 factor agreement.
 
+In our experiments, we used all movie ratings from MovieLens 20M dataset for constructing
+a recommender system. 
+For subsequent steps, however, we performed several pre-processing
+steps.
+
+Our implementation is based on a set of Python programs that make use
+of the Apache Spark library for model training and evaluation.
+
+We encode nominal features via one-hot encoding, and in a feature
+selection step, we dropped those not meeting a minimal entropy
+threshold.
+For training and evaluating explanations, we also pruned away movies
+with missing or negligible metadata. 
+We justify this step as a deployed recommendation explanation system
+could itself recognize its lack of metadata and notify users of said
+fact instead of providing a potentially inaccurate explanation for its
+recommendation.
+
+The MovieLens ratings constituted the sparse user-item input matrix
+for the training of a recommender system.
+This data is also the \emph{ground truth} for evaluation purposes
+later in this section.
+The ground truth was processed with alternating least squares matrix
+factorization algorithm, as implemented in Apache Spark MLlib, which
+outputs two matrices: \emph{user features} and \emph{movie features},
+which encode user preferences and movie properties along
+low-dimensional space of \emph{latent features}. 
+
+We trained recommender systems, constructed shadow models, and
+measured the prediction error of both individual
+latent factors (which can be then averaged across all of them)
+and the overall predicted ratings, iterating over
+several possible parameters (rank and regularization parameter for the
+recommender, type of the shadow model (linear or decision tree), and
+the number of bins and maximal depths for tree models). The results of
+these experiments are summarized in Figure
+\ref{table:results:parameters}.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{figures/shadow_parameters_accuracy.pdf}
+\caption{\label{table:results:parameters} Mean absolute error of shadow
+	models compared to real models with different parameters. Two metrics
+	are shown: error in predicting latent factors of the real model, and error
+	in predicting the ratings the real model gives}
+\end{figure}
+
+It can be seen that linear models consistently perform worse on both
+metrics than decision trees. 
+However, the difference in performance is much higher on observational
+agreement than on latent factor agreement. 
+We hypothesize that it could be due to to the linear regression models
+having a consistent bias that adds up during the matrix multiplication
+which is consistent with our
+observations.
+
+The observational agreement for linear models also gets worse with higher ranks,
+whereas the latent factor agreement gets better, which is also consistent with the
+bias hypothesis.
+
+In our experiments, one model (Rank 50, tree, lambda 0.1, depth 5, bins 32) performed
+best on both metrics, but in general, there can be a trade-off between them. Namely,
+if we exclude the best-performing model, we can see that different models are the
+second-best for latent factor agreement (rank 20, tree, lambda 0.1, 8 bins, depth 3)
+and observational agreement (Rank 12, tree, lambda 0.1, 8 bins, depth 5),
+although their performance is reasonably close to each other.
 
 
 
@@ -161,59 +226,6 @@ factor agreement.
 
 
 
-
-
-
-
-
-
-
-The process of building a recommender system and interpreting its output goes
-as follows:
-
-\begin{enumerate}
-	\item
-		A matrix factorization model is trained on the MovieLens data
-		set;
-	\item
-		After a matrix of movie latent factors is obtained, we treat
-		each latent factor as the target variable to be predicted with
-		a decision tree model from metadata features;
-	\item
-		Once we have built this model, we treat recommendations given by
-		it as proxies for the real recommendations, and in order to see
-		which metadata features are influential in a particular
-		recommendation, we use the QII method and randomly perturb the
-		values of metadata features and compare this counterfactual
-		output to the original output;
-	\item
-		The features which affect the output the most are deemed the
-		most influential.
-\end{enumerate}
-
-The shadow model can be evaluated in at least two ways: the quality of
-prediction of individual latent factors (``latent factor agreement'') and the
-quality of prediction of the end recommendation compared to the original model
-(``observational agreement''). One might assume that these two metrics should
-always correspond to each other; however, we have shown that it is not
-necessarily the case, and one model can perform the best on latent factor
-agreement, whereas another one can perform the best on observational agreement.
-
-The explanation for a recommendation is given in the form of a vector that shows
-for every metadata feature with non-zero influence its numeric influence
-value, which also indicated whether the influence is positive of negative. This
-vector can also be sorted by the absolute value of the influence into a ranked
-list of the most influential features.
-
-In order to numerically evaluate how accurate the explanations are, we generate
-a data set of ratings that are assigned to movies by simulated users, each of
-whom has a set of liked and disliked features, and the rating is determined by
-their presence or absence for a given movie. Since the true list of features
-that influence preferences of a particular user is known, every explanation can
-be evaluated by how close to the top of the list of inferred influential
-features the real ones are. We have shown that with a high statistical
-significance, our method is consistently determining the influential features
-better than random.
 
 One piece of proposed work is to apply this method to course recommendations by
 Coursera, with whom we are discussing the possibility of collaboration. The
