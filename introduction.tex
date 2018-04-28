@@ -164,12 +164,17 @@ interpretable inputs, and is therefore amenable to existing
 explanation techniques for machine learning models.
 
 
-
-
-
-The existing research on removing the use of sensitive attributes from
+\paragraph{Conditional debiasing} The existing research on removing the use of
+sensitive attributes from
 representations focuses on removing them completely, without constraining the
 removal by business necessity, which substantially limits its applicability in
-real world scenarios\cite{Beutel2017DataDA}, or make strong assumptions about
-the underlying distributions\cite{Kamishima}.
+real world scenarios\cite{Beutel2017DataDA}, or makes strong assumptions about
+the underlying distributions\cite{Kamishima}. Previous work on proxy use
+\cite{Datta:2017:UPD:3133956.3134097} solves a closely related problem of removing
+the use of correlates of sensitive attributes (``proxies'') from models, but it
+assumes a model in which no distributed representations exist, and proxies are
+limited to a small number of subcomputations rather than spread out across the
+entire internal representation. A lot of studies have been done on restricting
+the explicit use of protected information\cite{TschantzDW12} but fewer deal with
+indirect inferences.
 
