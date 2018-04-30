@@ -16,8 +16,8 @@ inadvertently infer and represent sensitive attributes (such as gender or race,
 even if they are not present as input features but can be reasonably accurately
 predicted from them) and use them to compute the final output with neither users
 nor maintainers of the machine learning system being aware of it. For instance,
-depending on circumstance, it may or may not be problematic or even illegal for
-a credit decision system to have disparate impact on race, but it’s definitely
+depending on circumstances, it may or may not be problematic or even illegal for
+a credit decision system to have disparate impact on race, but it's definitely
 problematic from the fairness perspective for it to have inferred race as its
 latent factor (e.g. from the ZIP Code and income) and use it in the final
 decision. Such inferences need to be identified in order to enhance transparency
@@ -26,7 +26,7 @@ and mitigated.
 This dissertation tackles this problem. We provide one result so far and
 identify directions for further exploration. In our first result, we create
 explanations of movie recommendations in terms of externally available movie
-metadata which are demonstrably reflective of the users’ preferences. We use
+metadata which are demonstrably reflective of the users' preferences. We use
 matrix factorization to create a movie recommendation system based on MovieLens
 data set. Then present Latent Factor Interpretation (LFI), a method for
 interpreting models by leveraging interpretations of latent factors in terms
@@ -41,7 +41,7 @@ are.
 In our second ongoing work, we are using a publicly available data set of home
 mortgage decisions in order to investigate potentially problematic use of
 sensitive attributes in such loan decisions. In this case, a classification
-algorithm can be used to make the allow/deny decision based on a number of
+algorithm can be used to make the allow/deny decisions based on a number of
 demographic and financial features of applicants. While the use of sensitive
 attributes such as gender is generally not allowed, certain features such as
 income may correlate with it, and their use can be justified as a business
@@ -64,8 +64,8 @@ there is a noticeable gender disparity in the courses being taken and it is
 being perpetuated by biased recommendations.
 
 Another step being proposed is the development of methods of partial
-explanations and isolating uninterpretability. Existing interpretation methods
-analyze models as-is. This poses a challenge because they’re likely to involve
+explanation and isolating uninterpretability. Existing interpretation methods
+analyze models as-is. This poses a challenge because they're likely to involve
 distributed representations where interpretable pieces of information (or at
 least interpretable with available data) are intertwined with uninterpretable
 ones. This may lead to inaccurate or confusing explanations that are attempting
