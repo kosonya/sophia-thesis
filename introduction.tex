@@ -85,16 +85,43 @@ proposal is to fix that by transforming the model in a way that isolates
 uninterpretable factors, which can be left as ``black boxes'' in the
 explanation, while improving the predictability from metadata (and thus
 interpretability) of other factors. This can be done, for example, by first
-training the model, and then optimizing it for this kind of interpretability
+training the model, and then and then altering both the item and user matrix,
+optimizing them for this kind of interpretability
 subject to constraint that the output must remain unchanged. Alternatively, it
 may be done by creating an invertible transformation matrix that can be applied
 before and after generating explanations. The crucial contribution that we
 expect to make here is the formalization of the isolated interpretability loss
 function as well as development of a method for optimizing for it.
 
+The idea that such transformation is possible is based on the assumption that
+the information predictable from metadata is spread across multiple latent
+factors and can be concentrated. For example, consider a situation when movies
+are being recommended based on ``masculinity -- femininity'' axis and
+``deep -- escapist'' axis, but the metadata only contains informations about
+``masculinity -- femininity''. However, an infinite number of equivalent models
+can be constructed by rotating the coordinates of both user and movie latent
+factor matrices. Only four of these infinite possibilities will contain a latent
+factor that is exactly aligned with the ``masculinity -- femininity'' axis,
+which is therefore ideally predictable from the metadata. In all other possible
+rotations, both of the latent factors will contain some information about both
+``masculinity -- femininity'' and ``deep -- escapist'' axes. Assuming that
+metadata doesn't contain information that could be used as a proxy for the
+latter, the both latent factors will be predicted not ideally, involving some
+information about ``masculinity -- femininity'' and then either nothing or
+other features as the result of overfitting. The quality of explanation can be
+drastically improved by finding such rotation of the coordinates that one of the
+latent factors aligns with an axis predictable from metadata. The search for
+such transformation can be formalized as trying to minimize the minimum
+prediction error of the two latent factors.
+
+It remains to be seen how exactly the optimization criterion can be formalized,
+given that desired interpretability properties can often be subjective, and so
+are the trade-offs between the explanation correctness and conciseness.
+
 In addition, we hope to collaborate with Coursera to make a case study of
 transparency and explanations in course recommendations, where it is
-particularly important to understand why certain courses are being recommended.
+particularly important to understand why certain courses are being recommended,
+and test our methods on publicly available data sets as well.
 
 \section{Ongoing work}
 
@@ -130,7 +157,7 @@ linear models the only possible choice is the output.
 \section{Thesis statement}
 
 \emph{Representation aware accounting for matrix factorization models enables
-explanations for for recommendations and mitigates bias.}
+explanations for recommendations and mitigates bias.}
 
 \section{Related work}
 
@@ -182,4 +209,7 @@ to make fair decisions
 \cite{luong11knn, feldman15disparate, dwork11fairness, zemel13fair}, but this
 may not always be feasible, and imposing specific constraints on the model itself
 can lead to more predictable behavior.
+
+
+
 

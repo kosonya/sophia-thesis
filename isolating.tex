@@ -25,28 +25,7 @@ predictability of the others. Then, we well-predicted factors can be
 incorporated in the explanation, whereas the poorly predicted ones are discarded
 and labeled as ``unknown''.
 
-The idea that such transformation is possible is based on the assumption that
-the information predictable from metadata is spread across multiple latent
-factors and can be concentrated. For example, consider a situation when movies
-are being recommended based on ``masculinity -- femininity'' axis and
-``deep -- escapist'' axis, but the metadata only contains informations about
-``masculinity -- femininity''. However, an infinite number of equivalent models
-can be constructed by rotating the coordinates of both user and movie latent
-factor matrices. Only four of these infinite possibilities will contain a latent
-factor that is exactly aligned with the ``masculinity -- femininity'' axis,
-which is therefore ideally predictable from the metadata. In all other possible
-rotations, both of the latent factors will contain some information about both
-``masculinity -- femininity'' and ``deep -- escapist'' axes. Assuming that
-metadata doesn't contain information that could be used as a proxy for the
-latter, the both latent factors will be predicted not ideally, involving some
-information about ``masculinity -- femininity'' and then either nothing or
-other features as the result of overfitting. The quality of explanation can be
-drastically improved by finding such rotation of the coordinates that one of the
-latent factors aligns with an axis predictable from metadata. The search for
-such transformation can be formalized as trying to minimize the minimum
-prediction error of the two latent factors.
-
-In a more general case, the definitions of optimization criteria can be trickier
+In a general case, the definitions of optimization criteria can be tricky
 to develop. It is possible that no invertible transformation exists such that
 one or more of the latent factors are predicted ideally. Instead, we would
 expect to see variance in how well the factors are predicted. In addition, using
@@ -70,6 +49,19 @@ will be much more human-legible if the second case, but in order to find this
 transformation, the simplicity of the model should also be incorporated into the
 loss function, and there should be a trade-off between the model simplicity and
 prediction quality.
+
+One possible approach to formalizing the notion of focusing the interpretability
+on a limited number of features would be maximizing the following for large
+values of $p$:
+
+\begin{equation}
+I = (|\frac{1}{e_1}|^p + ... + |\frac{1}{e_n}|^p)^{\frac{1}{p}}
+\end{equation}
+
+$e_1 ... e_n$ denote the prediction errors for intermediate features. Since $L^p$
+norms approach the maximum norm as $p$ increases, this would be one possible
+generalization for the notion of trying to increase to prediction quality for
+several features as much as possible when not only one feature matters.
 
 Addressing all this challenges and coming up with a viable method for searching
 for such transformations is the core of the proposed work.
