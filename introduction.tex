@@ -134,7 +134,13 @@ about loans, it should not rely on gender, but it can be justifiable for it to
 rely on applicants' income. However, income can be correlated with gender, in
 which case ensuring complete unpredictability of gender from the internal
 representation will also remove or distort information about income, which is
-undesirable. Thus, we are developing a method for removing the information
+undesirable. Typically, disparate impact on sensitive attributes is allowed if it
+can be explicitly justified with business necessity considerations. If a feature
+can be identified or constructed such that all inferences on it can be considered
+a business necessity, then this feature can be retained in all representations,
+and so long as no other information about sensitive attributes is preserved, 
+inferences from this representation would also be justifiable.
+Thus, we are developing a method for removing the information
 about sensitive attributes subject to constraint that the information about
 features justifiable as business necessity must remain. The main challenge here
 is that doing such optimization requires estimating the distribution of the
@@ -168,7 +174,8 @@ area of this thesis.
 The prediction of latent factor based on metadata has been
 previously tried\cite{gantner2010learning}, but not in the context of creating
 explanations and not with the goal of preserving causal correspondence between
-the original model and the shadow model. Some attempts to interpret latent
+the original model and the shadow model (i.e. making similar recommendations
+\emph{for similar reasons}). Some attempts to interpret latent
 factors rely on the authors looking at the data and making a judgment call
 without relying on a formal methodology that can be generalized
 \cite{koren2009matrix}. Others use topic modeling, which results in features
@@ -198,7 +205,7 @@ removal by business necessity, which substantially limits its applicability in
 real world scenarios\cite{Beutel2017DataDA}, or makes strong assumptions about
 the underlying distributions\cite{Kamishima}. Previous work on proxy use
 \cite{Datta:2017:UPD:3133956.3134097} solves a closely related problem of removing
-the use of correlates of sensitive attributes (``proxies'') from models, but it
+the correlates of sensitive attributes (``proxies'') that are used by models, but it
 assumes a model in which no distributed representations exist, and proxies are
 limited to a small number of subcomputations rather than spread out across the
 entire internal representation. A lot of studies have been done on restricting

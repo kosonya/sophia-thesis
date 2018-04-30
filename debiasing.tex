@@ -1,13 +1,13 @@
 \section{Conditional debiasing}
 
 In many situations, interpretation alone may not be enough, and the model may
-have to be changed in a way that removes bias from them. While there have been
-numerous studies in this area, they tend to focus on removing the use of
-sensitive attributes entirely. This may not be desirable in situations where
+have to be changed in a way that removes bias from them. Many studies focus on
+removing the use of sensitive attributes entirely\cite{Beutel2017DataDA, TschantzDW12}.
+This may not be desirable in situations where
 some use or the use of features correlated with sensitive ones is justifiable.
 
-We propose a method for removing unmediated use of protected attributes from
-machine learning models. This method is applicable to models that have an
+We propose a method for removing the non-justified use of protected attributes or
+their correlates from machine learning models. This method is applicable to models that have an
 internal numeric representation of the input data which are trained with
 gradient-based methods. Such models include neural networks, matrix
 factorization models, and linear models.
