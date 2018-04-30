@@ -25,6 +25,16 @@ predictability of the others. Then, we well-predicted factors can be
 incorporated in the explanation, whereas the poorly predicted ones are discarded
 and labeled as ``unknown''.
 
+In the simplest case when it is known that only one latent factor can possibly be
+predicted from the metadata, the optimization criterion would involve minimizing
+the following:
+
+\begin{equation}
+L = min(e_1, ..., e_n)
+\end{equation}
+
+$e_1 ... e_n$ denote the prediction errors for intermediate features. 
+
 In a general case, the definitions of optimization criteria can be tricky
 to develop. It is possible that no invertible transformation exists such that
 one or more of the latent factors are predicted ideally. Instead, we would
@@ -58,7 +68,7 @@ values of $p$:
 I = (|\frac{1}{e_1}|^p + ... + |\frac{1}{e_n}|^p)^{\frac{1}{p}}
 \end{equation}
 
-$e_1 ... e_n$ denote the prediction errors for intermediate features. Since $L^p$
+Since $L^p$
 norms approach the maximum norm as $p$ increases, this would be one possible
 generalization for the notion of trying to increase to prediction quality for
 several features as much as possible when not only one feature matters.
