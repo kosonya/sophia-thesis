@@ -1,7 +1,7 @@
-\ifdefined\final
-\else
-\def\enablecomments
-\fi
+%\ifdefined\final
+%\else
+%\def\enablecomments
+%\fi
 
 \ifdefined\draft
 \def\enablecomments{}
@@ -13,13 +13,17 @@
 \definecolor{LightRed}  {rgb}{1.0,0.8,0.8}
 \definecolor{LightGray} {rgb}{0.8,0.8,0.8}
 
-\newcommand{\commentformat}[3]{\sethlcolor{#2}\hl{\textsf{#1: #3}}}
-
 \ifdefined\enablecomments
-  \newcommand{\sophia}[1]{\commentformat{PM}{LightBlue}{#1}}
-  \newcommand{\pxm}   [1]{\commentformat{PM}{LightGreen}{#1}}
-  \newcommand{\anupam}[1]{\commentformat{AD}{LightRed}{#1}}
-  \newcommand{\sm}    [1]{\commentformat{SUMMARY}{LightGray}{#1}}
+  \newcommand{\commentformat}[3]{\sethlcolor{#2}\hl{\textsf{#1: #3}}}
 \else
-  \renewcommand{\commentformat}[3]{}
+  \newcommand{\commentformat}[3]{}
 \fi
+
+
+\newcommand{\sophia}[1]{\commentformat{PM}{LightBlue}{#1}}
+\newcommand{\pxm}   [1]{\commentformat{PM}{LightGreen}{#1}}
+\newcommand{\anupam}[1]{\commentformat{AD}{LightRed}{#1}}
+\newcommand{\sm}    [1]{\commentformat{SUMMARY}{LightGray}{#1}}
+
+
+
