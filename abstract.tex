@@ -1,8 +1,8 @@
 \begin{abstract}
 
 Numerous widely used machine learning algorithms work by means of creating
-hidden internal representations of the input data. These representations are
-typically not a part of the loss function, and thus are learned with no direct
+hidden internal representations of the input data\pxm{training data?}. These representations are
+typically not a \pxm{direct?} part of the loss function, and thus \pxm{good point follows, can it be elaborated upon in the main body?} are learned with no direct
 supervision and semantics attached to them. The algorithms that use such
 representations include matrix factorization for collaborative filtering
 recommender systems, which learn latent factors encoding the properties of items
@@ -15,7 +15,7 @@ challenge for accountability and fairness of such models. The model may
 inadvertently infer and represent sensitive attributes (such as gender or race,
 even if they are not present as input features but can be reasonably accurately
 predicted from them) and use them to compute the final output with neither users
-nor maintainers of the machine learning system being aware of it. For instance,
+nor maintainers of the machine learning system being aware of it. \pxm{The following point does not yet make sense. Need to understand mediation first.} For instance,
 depending on circumstances, it may or may not be problematic or even illegal for
 a credit decision system to have disparate impact on race, but it's definitely
 problematic from the fairness perspective for it to have inferred race as its
@@ -24,7 +24,7 @@ decision. Such inferences need to be identified in order to enhance transparency
 and mitigated.
 
 This dissertation tackles this problem. We provide one result so far and
-identify directions for further exploration. In our first result, we create
+identify directions for further exploration. \pxm{Use this paragraph to introduce results and future work, next paragraph can describe the result.} In our first result, we create
 explanations of movie recommendations in terms of externally available movie
 metadata which are demonstrably reflective of the users' preferences. We use
 matrix factorization to create a movie recommendation system based on MovieLens
@@ -39,7 +39,7 @@ can then be compared with known user preferences to evaluate how correct they
 are. 
 
 In our second ongoing work, we are using a publicly available data set of home
-mortgage decisions in order to investigate potentially problematic use of
+mortgage decisions \pxm{Who makes these decisions?} in order to investigate potentially problematic use of
 sensitive attributes in such loan decisions. In this case, a classification
 algorithm can be used to make the allow/deny decisions based on a number of
 demographic and financial features of applicants. While the use of sensitive
@@ -76,5 +76,6 @@ of the representation are isolated, correctly labeled as such, and the rest of
 the representation is explained with a higher precision. The goal of this work
 would be to develop and test such methods.
 
+\pxm{Summarize works again and stipulate what the overall benefits of them will be.}
 
 \end{abstract}

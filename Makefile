@@ -6,3 +6,5 @@ all:
 
 clean:
 	rm proposal.aux proposal.bbl proposal.blg proposal.log proposal.pdf proposal.toc
+
+include Makefile.piotrm
